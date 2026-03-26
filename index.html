@@ -12,89 +12,87 @@
     --text-main: #2C1F14; --text-sub: #7A6355; --shadow: rgba(60,35,10,0.12);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Noto Sans TC', sans-serif; background: var(--warm-white); color: var(--text-main); overflow-x: hidden; }
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 5%; background: rgba(253,250,245,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(200,169,122,0.25); transition: box-shadow .3s; }
-  nav.scrolled { box-shadow: 0 4px 24px var(--shadow); }
-  .nav-logo { font-family: 'Noto Serif TC', serif; font-size: 1.35rem; font-weight: 700; color: var(--wood-dark); letter-spacing: .05em; }
-  .nav-logo span { color: var(--rust); }
-  .nav-links { display: flex; gap: 32px; list-style: none; }
-  .nav-links a { text-decoration: none; color: var(--text-sub); font-size: .88rem; letter-spacing: .06em; font-weight: 500; transition: color .2s; position: relative; }
-  .nav-cta { background: var(--wood-dark); color: var(--cream) !important; padding: 9px 22px; border-radius: 40px; font-size: .82rem !important; }
-  .hero { min-height: 100vh; display: flex; align-items: center; padding: 100px 5% 60px; position: relative; background: var(--cream); }
-  .hero-content { position: relative; z-index: 2; max-width: 520px; animation: fadeUp .9s ease both; }
-  .hero h1 { font-family: 'Noto Serif TC', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); line-height: 1.25; color: var(--bark); margin-bottom: 20px; font-weight: 700; }
-  .hero-desc { font-size: 1rem; line-height: 1.85; color: var(--text-sub); margin-bottom: 36px; font-weight: 300; }
-  .btn-primary { display: inline-block; background: var(--wood-dark); color: var(--cream); padding: 14px 32px; border-radius: 50px; text-decoration: none; font-size: .9rem; box-shadow: 0 4px 16px rgba(107,79,53,0.28); transition: 0.3s; }
-  .btn-primary:hover { background: var(--rust); transform: translateY(-2px); }
-  .info-table { border-radius: 16px; overflow: hidden; border: 1px solid rgba(200,169,122,0.25); margin-top: 20px; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--warm-white); color: var(--text-main); line-height: 1.6; }
+  nav { position: fixed; top: 0; width: 100%; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 5%; background: rgba(253,250,245,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(200,169,122,0.2); }
+  .nav-logo { font-family: 'Noto Serif TC', serif; font-size: 1.35rem; font-weight: 700; color: var(--wood-dark); }
+  .nav-cta { background: var(--wood-dark); color: var(--cream); padding: 8px 20px; border-radius: 40px; text-decoration: none; font-size: 0.85rem; }
+  .hero { min-height: 80vh; display: flex; align-items: center; padding: 120px 5% 60px; background: var(--cream); position: relative; }
+  .hero-content { max-width: 600px; z-index: 2; animation: fadeUp 1s ease forwards; }
+  .hero h1 { font-family: 'Noto Serif TC', serif; font-size: 3.5rem; color: var(--bark); margin-bottom: 20px; line-height: 1.2; }
+  .hero h1 em { color: var(--rust); font-style: normal; }
+  .hero-desc { font-size: 1.1rem; color: var(--text-sub); margin-bottom: 30px; }
+  .btn-primary { display: inline-block; background: var(--wood-dark); color: var(--cream); padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 500; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+  .btn-primary:hover { background: var(--rust); transform: translateY(-3px); }
+  #info { padding: 80px 5%; }
+  .info-table { border: 1px solid var(--wood-light); border-radius: 12px; overflow: hidden; margin: 30px 0; }
   .info-row { display: flex; border-bottom: 1px solid rgba(200,169,122,0.2); }
-  .info-key { width: 40%; padding: 16px 20px; background: var(--wood-dark); color: var(--wood-light); font-size: .82rem; }
-  .info-val { flex: 1; padding: 16px 20px; background: var(--warm-white); font-size: .88rem; }
-  .price-highlight { font-family: 'Noto Serif TC', serif; font-size: 2.6rem; font-weight: 700; color: var(--rust); margin: 20px 0 8px; }
-  section { padding: 90px 5%; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
-  @media (max-width: 768px) { .nav-links { display: none; } }
+  .info-key { width: 30%; background: var(--wood-dark); color: var(--cream); padding: 15px; font-size: 0.9rem; }
+  .info-val { flex: 1; padding: 15px; background: white; }
+  .price-area { margin-top: 20px; }
+  .price-highlight { font-size: 3rem; color: var(--rust); font-weight: 700; font-family: 'Noto Serif TC', serif; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
-<nav id="navbar">
+<nav>
   <div class="nav-logo">溫居 <span>・</span> 住宅出租</div>
-  <ul class="nav-links">
-    <li><a href="#info">租屋資訊</a></li>
-    <li><a href="#contact" class="nav-cta">立即預約</a></li>
-  </ul>
+  <a href="#contact" class="nav-cta">預約看房</a>
 </nav>
 
-<section class="hero" id="home">
+<section class="hero">
   <div class="hero-content">
-    <span class="hero-tag">✦ 溫馨住宅 · 即刻入住</span>
-    <h1 id="site_title">載入中...</h1>
-    <p class="hero-desc" id="site_description">正在讀取後台設定的描述...</p>
-    <div class="hero-btns">
-      <a href="#info" class="btn-primary">查看租屋資訊</a>
-    </div>
+    <h1 id="site_title">讀取中...</h1>
+    <p class="hero-desc" id="site_description">正在連接後台資料...</p>
+    <a href="#info" class="btn-primary">查看詳細資訊</a>
   </div>
 </section>
 
 <section id="info">
-  <div class="section-title">租屋詳細資訊</div>
+  <h2 style="font-family:'Noto Serif TC'; margin-bottom:20px;">租屋詳細資訊</h2>
   <div class="info-table">
-    <div class="info-row"><div class="info-key">地址</div><div class="info-val" id="info_address">載入中...</div></div>
-    <div class="info-row"><div class="info-key">押金</div><div class="info-val">2 個月</div></div>
+    <div class="info-row">
+      <div class="info-key">房屋地址</div>
+      <div class="info-val" id="info_address">載入中...</div>
+    </div>
+    <div class="info-row">
+      <div class="info-key">租金包含</div>
+      <div class="info-val">管理費、清潔費</div>
+    </div>
   </div>
-  <div class="price-highlight" id="info_price">NT$ --</div>
-  <div class="price-unit">元 / 月</div>
+  <div class="price-area">
+    <div class="price-highlight" id="info_price">NT$ --</div>
+    <p style="color:var(--text-sub)">元 / 每月</p>
+  </div>
 </section>
 
 <script>
-  // ── 核心：讀取後台 general.json 資料 ──
+  // 從你的 GitHub 資料夾讀取 JSON
   fetch('./data/general.json')
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
-      // 自動更換網頁標題
+      // 1. 更新標題 (例如：六合館)
       if(data.site_title) {
-          document.getElementById('site_title').innerText = data.site_title;
-          document.title = data.site_title;
+        document.getElementById('site_title').innerHTML = `<em>${data.site_title}</em><br>歡迎入住`;
+        document.getElementById('page_title').innerText = data.site_title;
       }
-      // 自動更換描述
+      // 2. 更新描述
       if(data.site_description) {
-          document.getElementById('site_description').innerText = data.site_description;
+        document.getElementById('site_description').innerText = data.site_description;
       }
-      // 自動更換地址與租金
-      if(data.address) document.getElementById('info_address').innerText = data.address;
-      if(data.price) document.getElementById('info_price').innerText = `NT$ ${data.price}`;
+      // 3. 更新地址
+      if(data.address) {
+        document.getElementById('info_address').innerText = data.address;
+      }
+      // 4. 更新價格
+      if(data.price) {
+        document.getElementById('info_price').innerText = `NT$ ${data.price}`;
+      }
     })
     .catch(err => {
-      console.error('資料讀取失敗，請確認 data/general.json 是否存在', err);
-      document.getElementById('site_title').innerText = "歡迎預約看房";
+      console.error("讀取失敗:", err);
+      document.getElementById('site_title').innerText = "系統讀取中...";
     });
-
-  // 導覽列捲動效果
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
-  });
 </script>
 
 </body>
