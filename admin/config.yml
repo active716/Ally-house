@@ -1,0 +1,57 @@
+backend:
+  name: github
+  repo: active716/Ally-house
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+site_url: https://dapper-rugelach-8cf0e8.netlify.app
+
+locale: 'zh_Hant'
+
+collections:
+  - name: "settings"
+    label: "🏠 網站設定"
+    files:
+      - name: "general"
+        label: "基本資訊"
+        file: "data/general.json"
+        fields:
+          - { label: "房屋標題", name: "title", widget: "string", hint: "例：溫馨兩房一廳 近捷運" }
+          - { label: "副標題", name: "subtitle", widget: "string", hint: "例：找到屬於你的家的感覺" }
+          - { label: "房屋描述", name: "description", widget: "text" }
+          - { label: "月租金（元）", name: "price", widget: "string", hint: "例：18000" }
+          - { label: "坪數", name: "size", widget: "string", hint: "例：25坪" }
+          - { label: "格局", name: "layout", widget: "string", hint: "例：2房1廳1衛" }
+          - { label: "樓層", name: "floor", widget: "string", hint: "例：3樓/7樓" }
+          - { label: "地址", name: "address", widget: "string" }
+          - { label: "電話", name: "phone", widget: "string" }
+          - { label: "LINE ID", name: "line", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "YouTube 影片網址", name: "video", widget: "string", required: false, hint: "貼上 YouTube 網址，例：https://www.youtube.com/watch?v=XXXXXXX" }
+          - { label: "Google Maps 嵌入網址", name: "map", widget: "string", required: false, hint: "從 Google Maps 分享→嵌入地圖，複製 src= 裡面的網址" }
+
+  - name: "photos"
+    label: "📸 相片管理"
+    folder: "data/photos"
+    create: true
+    slug: "{{slug}}"
+    label_singular: "相片"
+    fields:
+      - { label: "相片標題", name: "title", widget: "string", hint: "例：溫馨客廳" }
+      - { label: "相片說明", name: "caption", widget: "string", hint: "例：寬敞明亮，採光良好" }
+      - { label: "上傳相片", name: "image", widget: "image" }
+      - { label: "排列順序", name: "order", widget: "number", default: 1 }
+
+  - name: "features"
+    label: "✨ 房屋特色"
+    folder: "data/features"
+    create: true
+    slug: "{{slug}}"
+    label_singular: "特色項目"
+    fields:
+      - { label: "圖示（Emoji）", name: "icon", widget: "string", hint: "例：🛋️ 🌿 🔒" }
+      - { label: "特色標題", name: "title", widget: "string" }
+      - { label: "特色說明", name: "description", widget: "text" }
+      - { label: "排列順序", name: "order", widget: "number", default: 1 }
