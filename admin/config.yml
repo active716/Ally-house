@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: active716/Ally-house
+  name: git-gateway
   branch: main
 
 media_folder: "images"
