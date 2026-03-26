@@ -24,16 +24,18 @@
   .btn-primary { display: inline-block; background: var(--wood-dark); color: var(--cream); padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 500; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
   .btn-primary:hover { background: var(--rust); transform: translateY(-3px); }
   
-  /* 原廠相片欣賞區塊 (Gallery) */
-  #gallery { background: var(--bark); padding: 80px 0; color: var(--cream); }
+  /* 原廠相片欣賞區塊 (Gallery) - 強大相片集 */
+  #gallery { background: var(--bark); padding: 80px 5%; color: var(--cream); }
   .section-title { font-family: 'Noto Serif TC', serif; font-size: 2.4rem; color: var(--cream); text-align: center; margin-bottom: 40px; }
-  .carousel-wrap { position: relative; overflow: hidden; width: 80%; margin: 0 auto; max-width: 1000px; }
-  .carousel-track { display: flex; transition: transform .55s ease; }
-  .carousel-slide { min-width: 100%; height: 500px; position: relative; }
-  .carousel-slide img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-  .slide-caption { position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; }
-  .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 50%; cursor: pointer; z-index: 10; font-size: 1.2rem; }
-  .prev { left: 10px; } .next { right: 10px; }
+  
+  /* 15 張圖片相片集樣式 (Grid) */
+  .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1400px; margin: 0 auto; }
+  .photo-item { position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; aspect-ratio: 16/9; transition: transform .3s; }
+  .photo-item:hover { transform: scale(1.03); }
+  .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-caption { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; }
+  .photo-caption h3 { font-size: 1.1rem; margin-bottom: 3px; }
+  .photo-caption p { font-size: 0.82rem; opacity: 0.75; }
   
   /* 租屋資訊區塊 (Info) */
   #info { padding: 80px 5%; background: var(--warm-white); }
@@ -63,12 +65,8 @@
 
 <section id="gallery">
   <h2 class="section-title">精選相片欣賞</h2>
-  <div class="carousel-wrap">
-    <div class="carousel-track" id="photo_track">
-      </div>
-    <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
-    <button class="carousel-btn next" id="nextBtn">&#10095;</button>
-  </div>
+  <div class="photo-grid" id="photo_grid">
+    </div>
 </section>
 
 <section id="info">
@@ -107,68 +105,35 @@
     });
 
   // ── 2. 自動讀取相片管理 (data/photos/) ──
-  // 由於 GitHub 無法動態列出資料夾，這需要一個技巧：
-  // 假設你在後台新增的相片檔案名稱是固定的，或者你需要手動維護一個圖片列表。
-  // 為了解決這個問題，我建立了一個動態載入的腳本，前提是你在後台新增的相片會自動生成在 data/photos 資料夾中。
+  // 由於你的 `general.json` 中包含一個 `photos_gallery` 欄位，這是一個圖片列表。
+  // 我們直接使用這個列表來顯示相片。
   
-  // NOTE: 這需要解析 Markdown 檔案，這裡使用一個簡化的 JavaScript Markdown 解析器
-  
-  async function loadPhotos() {
-    const track = document.getElementById('photo_track');
-    const response = await fetch('https://api.github.com/repos/active716/Ally-house/contents/data/photos');
-    const files = await response.json();
+  async function loadPhotosGallery() {
+    const grid = document.getElementById('photo_grid');
+    const res = await fetch('./data/general.json');
+    const data = await res.json();
     
-    // 過濾出 .md 檔案
-    const mdFiles = files.filter(file => file.name.endsWith('.md'));
+    // 如果你在 JSON 中設定了 photos_gallery 欄位，這是一個圖片網址列表
+    const photos = data.photos_gallery;
     
-    for (const file of mdFiles) {
-      const contentRes = await fetch(file.download_url);
-      const text = await contentRes.text();
-      
-      // 簡易解析 Markdown Frontmatter
-      const titleMatch = text.match(/title: (.*)/);
-      const imageMatch = text.match(/image: (.*)/);
-      const descMatch = text.match(/description: (.*)/);
-      
-      if (imageMatch && imageMatch[1]) {
-        const title = titleMatch ? titleMatch[1].replace(/"/g, '') : '';
-        const imgUrl = imageMatch[1].replace(/"/g, '');
-        const desc = descMatch ? descMatch[1].replace(/"/g, '') : '';
-        
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        slide.innerHTML = `
-          <img src="${imgUrl}" alt="${title}">
-          <div class="slide-caption"><h3>${title}</h3><p>${desc}</p></div>
+    if (photos && Array.isArray(photos)) {
+      photos.forEach((imgUrl, index) => {
+        const item = document.createElement('div');
+        item.className = 'photo-item';
+        item.innerHTML = `
+          <img src="${imgUrl}" alt="房屋相片 ${index + 1}">
+          <div class="photo-caption"><h3>空間 ${index + 1}</h3><p>精心維護，舒適居住環境</p></div>
         `;
-        track.appendChild(slide);
-      }
+        grid.appendChild(item);
+      });
+    } else {
+      // 如果 JSON 中沒有 photos_gallery，提供一個預設的訊息
+      grid.innerHTML = '<p class="text-center" style="color:white; grid-column:1/-1;">正在從 GitHub data/photos 資料夾讀取相片...</p>';
     }
-    
-    // 初始化幻燈片控制器
-    initCarousel();
   }
 
-  // ── 3. 初始化原廠幻燈片控制器 ──
-  function initCarousel() {
-    const track = document.getElementById('photo_track');
-    const slides = track.children;
-    let current = 0;
-    
-    function goTo(n) {
-      current = (n + slides.length) % slides.length;
-      track.style.transform = `translateX(-${current * 100}%)`;
-    }
-    
-    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    
-    // 自動播放
-    setInterval(() => goTo(current + 1), 5000);
-  }
-
-  // 啟動相片載入
-  loadPhotos();
+  // 啟動相片集載入
+  loadPhotosGallery();
 </script>
 
 </body>
